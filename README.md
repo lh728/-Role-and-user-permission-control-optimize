@@ -1,0 +1,2 @@
+# -Role-and-user-permission-control-optimize
+在上一个权限控制管理页面的基础上进行了优化和修改，主要是增加了后台管理页面的布局，左侧ul菜单弹出和收回等功能实现和各种针对用户，角色，权限的具体增删改查功能实现。Optimized and modified on the basis of the previous authority control management page, mainly adding the layout of the background management page, the realization of functions such as pop-up and withdrawal of the ul menu on the left, and various additions, deletions, changes and inqure function realization for users, roles, and authorities.

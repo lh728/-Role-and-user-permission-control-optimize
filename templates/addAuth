@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./style.css">
+    <title>Title</title>
+    <script type="text/javascript">
+        function openNew() {
+            //获取页面的总高度 宽度
+            let scrollHeight = document.documentElement.scrollHeight;
+            let scrollWidth = document.documentElement.scrollWidth;
+            let mark = document.createElement("div")
+            mark.id = "mark";
+            mark.style.width = scrollWidth + "px";
+            mark.style.height = scrollHeight + "px";
+            let login = document.createElement("div")
+            login.id = "login"
+            login.innerHTML =
+                "<body align=\"center\">\n" +
+                "<div>\n" +
+                "<h2>新增一个权限功能：</h2>\n" +
+                "<input type=\"text\" id=\"authName\" name=\"authName\" placeholder=\"authName\" maxlength=\"20\" required=\"required\">\n" +
+                "<input type=\"submit\" value=\"提交\" onclick='tosave3()' >\n" +
+                "</div>\n" +
+                "<div>\n"+
+                "<button id='close'>关闭</button>\n"+
+                "</div>\n" +
+                "</body>"
+            //获得可视区域的高度宽度
+            let clientWidth = document.documentElement.clientWidth;
+            let clientHeight = document.documentElement.clientHeight;
+            document.body.appendChild(login)
+            document.body.appendChild(mark)
+            //获取登录框的高度宽度
+            let LoginWidth = login.offsetWidth;
+            let LoginHeight = login.offsetHeight;
+            let leftFixed = (clientWidth - LoginWidth) / 2 + "px"
+            let topFixed = (clientHeight - LoginHeight) / 2 + "px"
+            login.style.left = leftFixed;
+            login.style.top = topFixed;
+            let close = document.getElementById("close")
+            mark.onclick = close.onclick = function() {
+                document.body.removeChild(mark)
+                document.body.removeChild(login)
+            }
+        }
+
+        function test3() {
+            openNew()
+        }
+        function tosave3() {
+            var roleName = $("#roleName");
+            var authName = $("#authName");
+            $.ajax({
+                url: "/addAuthInfo",
+                data: {roleName: roleName.val(), authName: authName.val()},
+                success: function (result) {
+                    console.log(result)
+                    reloadThisPage3()
+                    alert("添加成功")
+                    document.getElementById("close").click();
+                }
+
+            });
+        };
+        function reloadThisPage3() {
+            $("#contentdiv").load("/addAuth",null,function(){/*alert("加载成功")*/});
+        }
+
+    </script>
+</head>
+<body>
+<div align="center">
+    <h1>学生管理系统权限控制</h1>
+</div>
+<footer class="footer">
+    <button id="btn" onclick="test3()">新增一个权限</button>
+</footer>
+<div class="tablebox">
+    <table align="center" border="1px" cellpadding="10%" >
+        <thead>
+        <tr>
+            <th>AuthId</th>
+            <th>AuthName</th>
+        </tr>
+        </thead>
+        <tr th:each="show:${findAuth}">
+            <td th:text="${show.authorityId}"></td>
+            <td th:text="${show.authorityName}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

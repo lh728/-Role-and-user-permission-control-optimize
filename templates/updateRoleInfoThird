@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>修改信息</title>
+    <script type="text/javascript">
+        function toPage10(curl){
+            curl = curl+"?roleName="+$("#roleName").val()+"&authName="+$("#authName").find("option:selected").text()+"&roleId="+$("#roleId").val();
+            //"/page?id=1&name='tom'&age=2"
+            $("#contentdiv").load(curl,null,function(){/*alert("加载成功")*/});
+        }
+    </script>
+</head>
+
+<h1>学生管理系统控制权限</h1>
+
+    <input type="hidden" id="roleId" name="roleId" maxlength="20" th:value="${roleInfo[0].roleId}">
+    角色名：<input type="text" id="roleName" name="roleName" placeholder="roleName" maxlength="20" required="required" th:value="${roleInfo[0].roleName}"><br/>
+    权限：<!--<input type="text" id="roleName" name="roleName" placeholder="roleName" maxlength="20" required="required" th:value="${userInfo[0].roles[0].roleName}"><br/>-->
+    <select id="authName" name="authName">
+        <option>请选择</option>
+        <option>增加</option>
+        <option>删除</option>
+        <option>修改</option>
+        <option>查询</option>
+    </select>
+    <input type="submit" value="提交" onclick="toPage10('/updateRoleInfoThird')">
+
+</body>
+</html>

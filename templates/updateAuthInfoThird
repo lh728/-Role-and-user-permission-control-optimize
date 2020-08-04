@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>修改信息</title>
+    <script type="text/javascript">
+        function toPage13(curl){
+            curl = curl+"?authName="+$("#authorityName").val()+"&authId="+$("#authorityId").val();
+            alert(curl)
+            //"/page?id=1&name='tom'&age=2"
+            $("#contentdiv").load(curl,null,function(){/*alert("加载成功")*/});
+        }
+    </script>
+</head>
+
+<h1>学生管理系统控制权限</h1>
+
+    <input type="hidden" id="authorityId" name="authorityId" maxlength="20" th:value="${model.authInfo[0].authorityId}">
+    权限名：<input type="text" id="authorityName" name="authorityName" placeholder="authorityName" maxlength="20" required="required" th:value="${model.authInfo[0].authorityName}"><br/>
+    <input type="submit" value="提交" onclick="toPage13('/updateAuthInfoThird')">
+
+</body>
+</html>

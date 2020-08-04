@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./style.css">
+    <title>Title</title>
+    <script type="text/javascript">
+        function openNew() {
+            //获取页面的总高度 宽度
+            let scrollHeight = document.documentElement.scrollHeight;
+            let scrollWidth = document.documentElement.scrollWidth;
+            let mark = document.createElement("div")
+            mark.id = "mark";
+            mark.style.width = scrollWidth + "px";
+            mark.style.height = scrollHeight + "px";
+            let login = document.createElement("div")
+            login.id = "login"
+            login.innerHTML =
+                "<body align=\"center\">\n" +
+                "<div>\n" +
+                "<h2>给角色设置权限：</h2>\n" +
+                "<input type=\"text\" id=\"roleName\" name=\"roleName\" placeholder=\"roleName\" maxlength=\"20\" required=\"required\">\n" +
+                "<select id=\"authName\" name=\"authName\">\n" +
+                "    <option>请选择</option>\n" +
+                "    <option>增加</option>\n" +
+                "    <option>删除</option>\n" +
+                "    <option>修改</option>\n" +
+                "    <option>查询</option>\n" +
+                "</select>\n" +
+                "<input type=\"submit\" value=\"提交\" onclick='tosave2()' >\n" +
+                "</div>\n" +
+                "<div>\n"+
+                "<button id='close'>关闭</button>\n"+
+                "</div>\n" +
+                "</body>"
+            //获得可视区域的高度宽度
+            let clientWidth = document.documentElement.clientWidth;
+            let clientHeight = document.documentElement.clientHeight;
+            document.body.appendChild(login)
+            document.body.appendChild(mark)
+            //获取登录框的高度宽度
+            let LoginWidth = login.offsetWidth;
+            let LoginHeight = login.offsetHeight;
+            let leftFixed = (clientWidth - LoginWidth) / 2 + "px"
+            let topFixed = (clientHeight - LoginHeight) / 2 + "px"
+            login.style.left = leftFixed;
+            login.style.top = topFixed;
+            let close = document.getElementById("close")
+            mark.onclick = close.onclick = function() {
+                document.body.removeChild(mark)
+                document.body.removeChild(login)
+            }
+        }
+
+        function test2() {
+            openNew()
+        }
+        function tosave2() {
+                var roleName = $("#roleName");
+                var authName = $("#authName");
+                $.ajax({
+                    url: "/addrole",
+                    data: {roleName: roleName.val(), authName: authName.val()},
+                    success: function (result) {
+                        console.log(result)
+                        reloadThisPage2()
+                        alert("添加成功")
+                        document.getElementById("close").click();
+                    }
+
+                });
+        };
+        function reloadThisPage2() {
+            $("#contentdiv").load("/addRoleToAuth",null,function(){/*alert("加载成功")*/});
+        }
+
+    </script>
+</head>
+<body>
+<div align="center">
+    <h1>学生管理系统权限控制</h1>
+</div>
+<footer class="footer">
+    <button id="btn" onclick="test2()">给角色设置权限</button>
+</footer>
+<div class="tablebox">
+    <table align="center" border="1px" cellpadding="0"  cellspacing="0">
+        <thead>
+        <tr>
+            <th>RoleId</th>
+            <th>RoleName</th>
+            <th>权限</th>
+        </tr>
+        </thead>
+        <tr th:each="show:${findRole}">
+            <td th:text="${show.roleId}"></td>
+            <td th:text="${show.roleName}"></td>
+            <td th:text="${show.authorities.size() == 0 ? '无' : show.authorities[0].authorityName}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

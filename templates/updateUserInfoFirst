@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript">
+        function toPage1(curl){
+            curl = curl+"?userId="+$("#userId").val();
+            $("#contentdiv").load(curl,null,function(){/*alert("加载成功")*/});
+        }
+        function toPageAsk(curl){
+            curl = curl.replace('"','').replace('"','');
+            $("#contentdiv").load(curl,null,function(){/*alert("加载成功")*/});
+        }
+    </script>
+    <script>
+        function deleteByUserName(userName){
+            var url = "/deleteByUserName/" + userName;
+            alert("删除成功");
+            location.href = url;
+        }
+    </script>
+</head>
+<body>
+<div align="center">
+    <h1>学生管理系统权限控制</h1>
+</div>
+<div>
+    请输入要进行修改的用户ID：<input type="text" name="userId" id="userId" placeholder="userId" maxlength="20" required="required">
+    <input type="submit" value="提交" onclick="toPage1('/updateUserInfoFirst')">
+
+</div>
+<div class="tablebox">
+    <table align="center" border="0" cellpadding="0" id="tableId" cellspacing="0">
+        <thead>
+        <tr>
+            <th>UserId</th>
+            <th>UserName</th>
+            <th>角色</th>
+            <th>修改</th>
+            <th>删除</th>
+        </tr>
+        </thead>
+        <tr th:each="show:${findUser}" >
+            <td th:text="${show.userId}" ></td>
+            <td th:text="${show.userName}" ></td>
+            <td th:text="${show.roles.size() == 0 ? '无' : show.roles[0].roleName}" id="roleName"></td>
+            <td><a href="#" th:onclick="toPageAsk('/updateUserInfoThird/[[${show.userId}]]')">修改</a></td>
+            <!--<a th:href="'update/'+${show.id}">-->
+            <td><a href="#" th:onclick="toPageAsk('/deleteByUserName/[[${show.userName}]]')">删除</a></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<title>学生管理系统权限控制</title>
+
+<link rel="stylesheet" type="text/css" href="./left-side-menu.css">
+<link rel="stylesheet" type="text/css" href="./iconfont.css">
+
+<script type="text/javascript" src="./jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="./jquery.slimscroll.min.js"></script>
+<script type="text/javascript" src="./left-side-menu.js"></script>
+    <script type="text/javascript">
+        function toPage(curl){
+            $("#contentdiv").load(curl,null,function(){/*alert("加载成功")*/});
+        }
+    </script>
+    <style>
+        table, tbody, tfoot, thead, tr, th, td {
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            vertical-align: baseline;
+            background: transparent;
+            border-collapse: collapse;
+            border-spacing: 0;
+            border: 0;
+            color: #fff;
+        }
+
+        .tablebox table {
+            border-collapse: separate;
+            border-spacing: 1px
+        }
+
+        .tablebox {
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+            margin: 10px auto;
+        }
+
+        .tablebox table {
+            width: 100%;
+        }
+
+        .tablebox table th, .tablebox table td {
+            font-size: 12px;
+            text-align: center;
+            line-height: 16px;
+            background: #3754a2;
+            padding: 12px;
+        }
+
+        .tablebox table th {
+            height: 30px;
+            line-height: 30px;
+            background: #6271bd;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .tablebox table td img {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .tablebox.table_md table td, .tablebox.table_md table th {
+            line-height: 18px;
+        }
+
+    </style>
+    <style>
+        /*设置body样式*/
+        body {
+            margin: 0; /*去掉蓝色边框两侧的空白因为body默认属性两边有缝隙*/
+        }
+
+        /*设置头部样式*/
+        .pg_header {
+            background-color: rgb(189, 181, 181);
+            height: 48px;
+            line-height: 48px;
+            min-width: 980px;
+        }
+
+        /*设置logo样式*/
+        .pg_header .logo {
+            background-color: #3b5998;
+            width: 220px;
+            height: 48px;
+            color: white;
+            font-size: 20px;
+            text-align: center; /*设置在这个div中左右居中*/
+        }
+        /*设置用户标签样式*/
+        .pg_header .user {
+            margin-right: 80px;
+            padding: 0 20px;
+            height: 48px;
+            position: relative;
+        }
+        /*设置当鼠标放到这个标签上时变色，并且把*/
+        .pg_header .user:hover {
+            background-color: steelblue;
+        }
+        /*设置头像下面的下拉框，鼠标放上去弹出下拉框，其实就是当鼠标放上去的时候让b去掉以前设置的的display=none*/
+        .pg_header .user:hover .b {
+            display: block;
+        }
+        /*设置头像样式*/
+        .pg_header .user .a img {
+            width: 40px; /*设置头像宽度*/
+            height: 40px; /*设置头像高度*/
+            margin-top: 5px; /*设置图片距离上顶的距离是多少像素*/
+            border-radius: 50%; /*border-radius: 50%让方形的图片变成圆的*/
+        }
+        /*设置下拉框样式*/
+        .pg_header .user .b {
+            position: absolute; /*和user中的relative同用*/
+            top: 48px;
+            right: 0;
+            background-color: #bbbbbb;
+            z-index: 20;
+            width: 160px;
+            margin-right: -39px;
+            margin-top: 0;
+            display: none;
+        }
+        .pg_header .user .b a {
+            display: block;
+        }
+        /*设置右侧边框样式*/
+        .pg_content .content {
+            position: absolute; /*使用position后top等属性就可以使用了，就可以使用这些属性将一个DIV固定到某个位置*/
+            top: 48px;
+            left: 220px;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(to right, #bb313e25, #bb313e25, #d7222925, #dd4a1625, #e4761525, #f5c50025, #f0e92725, #b1ce2425, #48a93525, #03944525, #157c4f25, #176a5825, #1b556325, #1d386f25, #1d386f25, #20277825, #52266325, #8a244b25);
+            overflow: auto; /*用了overflow之后当这个div中纵向内容过多时会出现下拉框*/
+            min-width: 980px; /* 设置最小宽度*/
+            z-index: 9;
+        }
+        /*设置往左飘浮样式*/
+        .left {
+            float: left;
+        }
+        /*设置往右飘浮样式*/
+        .right {
+            float: right;
+        }
+    </style>
+</head>
+<body>
+<!--<div class ="top"  style="width: 100%;height: 80px;background-color: #397bc5"></div>-->
+<!--头部-->
+<div class="pg_header" style="width: 100%;height: 48px;background-color: #397bc5">
+    <div class="logo left">学生管理系统权限控制</div>  <!--这个设置往左飘浮-->
+    <i class="fab fa-500px"></i>
+    <div class="user right">            <!--这个设置往右飘浮-->
+        <a class='a' href="#">
+            <img src="./logo.jpg">
+        </a>
+        <div class="b" style="">
+            <a href="#" onClick="return confirm('你是一个上帝!');" target="_self">我的资料</a>
+            <a href="#" onclick="return confirm('这个键还没想好');">退出登陆</a>
+        </div>
+    </div>
+</div>
+
+<div class="left-side-menu" >
+    <div class="lsm-expand-btn">
+        <div class="lsm-mini-btn">
+            <label>
+                <input type="checkbox" checked="checked">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="30" />
+                    <path class="line--1" d="M0 40h62c18 0 18-20-17 5L31 55" />
+                    <path class="line--2" d="M0 50h80" />
+                    <path class="line--3" d="M0 60h62c18 0 18 20-17-5L31 45" />
+                </svg>
+            </label>
+        </div>
+<!--        <input type="text">    这边是左侧导航栏-->
+    </div>
+    <div class="lsm-container">
+        <div class="lsm-scroll" >
+            <div class="lsm-sidebar">
+                <ul>
+                    <li class="lsm-sidebar-item">
+                        <a href="javascript:location.reload();"><i class="my-icon lsm-sidebar-icon icon_2"></i><span>回到主页</span></a>
+                        <a href="javascript:;"><i class="my-icon lsm-sidebar-icon icon-users"></i><span>用户</span><i class="my-icon lsm-sidebar-more"></i></a>
+                        <ul>
+                            <li class="lsm-sidebar-item">
+                                <a href="javascript:;"><i class="my-icon lsm-sidebar-icon "></i><span>查询</span><i class="my-icon lsm-sidebar-more"></i></a>
+                                <ul>
+                                    <li><a href="#" onclick="toPage('/askByUserId')"><span>根据用户ID查找用户名</span></a></li>
+                                    <li><a href="#" onclick="toPage('/askByUserName')"><span>根据用户名查找用户ID</span></a></li>
+                                </ul>
+                            </li>
+                            <li class="lsm-sidebar-item">
+                                <a href="#" onclick="toPage('/addUserToRole')"><i class="my-icon lsm-sidebar-icon "></i><span>增加</span></a>
+                            </li>
+                            <li class="lsm-sidebar-item">
+                                <a href="#" onclick="toPage('/updateUserInfoFirst')"><i class="my-icon lsm-sidebar-icon "></i><span>修改</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="lsm-sidebar-item">
+                        <a href="javascript:;"><i class="my-icon lsm-sidebar-icon icon-users"></i><span>角色</span><i class="my-icon lsm-sidebar-more"></i></a>
+                        <ul>
+                            <li><a href="#" onclick="toPage('/askByRoleId')"><span>查询</span></a></li>
+                            <li><a href="#" onclick="toPage('/addRoleToAuth')"><span>新增</span></a></li>
+                            <li><a href="#" onclick="toPage('/updateRoleInfoFirst')"><span>修改</span></a></li>
+                        </ul>
+                    </li>
+                    <li class="lsm-sidebar-item">
+                        <a href="javascript:;"><i class="my-icon lsm-sidebar-icon icon-users"></i><span>权限</span><i class="my-icon lsm-sidebar-more"></i></a>
+                        <ul>
+                            <li><a href="#" onclick="toPage('/askByAuthId')"><span>查询</span></a></li>
+                            <li><a href="#" onclick="toPage('/addAuth')"><span>新增</span></a></li>
+                            <li><a href="#" onclick="toPage('/updateAuthInfoFirst')"><span>修改</span></a></li>
+                        </ul>
+                    </li>
+                    <li class="lsm-sidebar-item">
+                        <a href="javascript:;"><i class="my-icon lsm-sidebar-icon icon_3"></i><span>退出系统</span><i class="my-icon lsm-sidebar-more"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--这里是主页内容栏-->
+<div class="pg_content">
+
+    <!--左侧边框（内容栏）-->
+    <div class="content left" id="contentdiv" align="center">
+        <div align="center">
+            <h2>用户</h2>
+        </div>
+        <div class="tablebox">
+        <table align="center" border="0" cellpadding="0" id="tableId" cellspacing="0">
+            <thead>
+            <tr>
+                <th>UserId</th>
+                <th>UserName</th>
+                <th>角色</th>
+            </tr>
+            </thead>
+            <tr th:each="show:${findUser}" >
+                <td th:text="${show.userId}"></td>
+                <td th:text="${show.userName}"></td>
+                <td th:text="${show.roles.size() == 0 ? '无' : show.roles[0].roleName}"></td>
+            </tr>
+        </table>
+        </div>
+        <div align="center">
+            <h2>角色</h2>
+        </div>
+        <div class="tablebox">
+        <table align="center" border="1px" cellpadding="10%" >
+            <thead>
+            <tr>
+                <th>RoleId</th>
+                <th>RoleName</th>
+                <th>权限</th>
+            </tr>
+            </thead>
+            <tr th:each="show:${findRole}">
+                <td th:text="${show.roleId}"></td>
+                <td th:text="${show.roleName}"></td>
+                <td th:text="${show.authorities.size() == 0 ? '无' : show.authorities[0].authorityName}"></td>
+            </tr>
+        </table>
+        </div>
+        <div align="center">
+
+            <h2>权限</h2>
+        </div>
+        <div class="tablebox">
+        <table align="center" border="1px" cellpadding="10%" >
+            <thead>
+            <tr>
+                <th>AuthId</th>
+                <th>AuthName</th>
+            </tr>
+            </thead>
+            <tr th:each="show:${findAuth}">
+                <td th:text="${show.authorityId}"></td>
+                <td th:text="${show.authorityName}"></td>
+            </tr>
+        </table>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

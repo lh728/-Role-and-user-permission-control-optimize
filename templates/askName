@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript">
+        function toPage5(curl){
+            curl = curl+"?userName="+$("#userName").val();
+            //"/page?id=1&name='tom'&age=2"
+            $("#contentdiv").load(curl,null,function(){/*alert("加载成功")*/});
+        }
+    </script>
+</head>
+<body>
+<div align="center">
+    <h1>学生管理系统权限控制</h1>
+</div>
+<div>
+    请输入想要查询的ID：<input type="text" name="userName" id="userName" placeholder="userName" maxlength="20" required="required">
+    <input type="submit" value="提交" onclick="toPage5('/askByUserName')">
+</div>
+
+<div class="tablebox">
+    <table align="center" border="0" cellpadding="0" id="tableId" cellspacing="0">
+        <thead>
+        <tr>
+            <th>UserId</th>
+            <th>UserName</th>
+            <th>角色</th>
+        </tr>
+        </thead>
+        <tr th:each="show:${findUserName}" >
+            <td th:text="${show.userId}"></td>
+            <td th:text="${show.userName}"></td>
+            <td th:text="${show.roles.size() == 0 ? '无' : show.roles[0].roleName}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

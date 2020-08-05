@@ -227,17 +227,7 @@ public class EntityController {
         }
         return "/askName";
     }
-    @RequestMapping("/add")
-    public String add(){
-        return "/add";
-    }
-    @RequestMapping("/add2")
-    public String add2(){
-        return "/add2";
-    }@RequestMapping("/add3")
-    public String add3(){
-        return "/add3";
-    }
+    
 
     @RequestMapping("/addUserToRole")
     public String addUser(Model model){

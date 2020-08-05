@@ -90,8 +90,9 @@ public class EntityController {
     public ModelAndView deleteByUserName(@PathVariable("userName") String userName){
         System.out.println("username="+userName);
         entityService.deleteByUserName(userName);
-        return  new ModelAndView("redirect:/quanxian");
+        return  new ModelAndView("redirect:/updateUserInfoFirst");
     }
+
 
     /*
         查询用户权限
@@ -166,7 +167,7 @@ public class EntityController {
     @GetMapping("/deleteByRoleId/{roleId}")
     public ModelAndView deleteByRoleId(@PathVariable("roleId") Integer roleId){
         entityService.deleteByRoleId(roleId);
-        return  new ModelAndView("redirect:/quanxian");
+        return  new ModelAndView("redirect:/updateRoleInfoFirst");
     }
 
 
@@ -187,7 +188,7 @@ public class EntityController {
     @GetMapping("/deleteByAuthorityName/{authorityName}")
     public ModelAndView deleteByAuhorityName(@PathVariable("authorityName") String authorityName){
         entityService.deleteByAuthorityName(authorityName);
-        return new ModelAndView("redirect:/quanxian");
+        return new ModelAndView("redirect:/updateAuthInfoFirst");
     }
 
     /*
@@ -230,6 +231,14 @@ public class EntityController {
     public String add(){
         return "/add";
     }
+    @RequestMapping("/add2")
+    public String add2(){
+        return "/add2";
+    }@RequestMapping("/add3")
+    public String add3(){
+        return "/add3";
+    }
+
     @RequestMapping("/addUserToRole")
     public String addUser(Model model){
         List<User> findUser = userRepository.findAll();
@@ -348,5 +357,7 @@ public class EntityController {
 
 
 }
+
+
 
 

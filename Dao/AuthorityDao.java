@@ -1,6 +1,6 @@
 package com.example.Dao;
 
-import com.example.Entity.Authority;
+import com.example.Entity.Authority; 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

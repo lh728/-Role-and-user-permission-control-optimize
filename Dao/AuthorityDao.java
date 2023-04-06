@@ -8,5 +8,5 @@ import java.util.List;
 public interface AuthorityDao extends JpaRepository<Authority, Integer> {
     List<Authority> findAllByAuthorityName(String authorityName);
     void deleteByAuthorityName(String authorityName);
-    List<Authority> findAllByAuthorityId(Integer authorityId); 
+    List<Authority> findAllByAuthorityId(Integer authorityId);   
 }
